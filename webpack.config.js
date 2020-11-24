@@ -1,6 +1,7 @@
 const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
+const uglify = require('uglifyjs-webpack-plugin');
 
 module.exports = {
     //模式：开发模式/生产模式
@@ -37,8 +38,8 @@ module.exports = {
                     'presets':['latest'],
                 }
             },{
-                test:/\.tpl$/,
-                loader:'ejs-loader'
+                test: /\.tpl$/,
+                loader: 'ejs-loader'
             },{
                 test:/\.css$/,
                 //多个loader
@@ -71,17 +72,17 @@ module.exports = {
                             }
                         }
                     },
-                    'scss-loader'
+                    'sass-loader'
                 ]
             },{
-                test:/\.(png|jpg|jpeg|gif|ico|woff|eot|ttf)$/i,
-                //文件小于1024 用base64编码压缩
-                loaders:'url-loader?limit=1024&name=img/[name]-[hash:16].[ext]'
+                test: /\.(png|jpg|jpeg|gif|ico|woff|eot|svg|ttf)$/i,
+                loaders: 'url-loader?limit=1024&name=img/[name]-[hash:16].[ext]'
             }
         ]
     },
     //插件配置
     plugins:[
+        new uglify(),
         new HtmlWebpackPlugin({
             filename:'index.html',
             template:path.resolve(__dirname,'src/index.html'),
