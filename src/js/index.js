@@ -31,6 +31,7 @@ import { scrollToBottom } from '../libs/utils';
 
     function bindEvent(){
         NavBar.bindEvent(setType);
+        NewsList.bindEvent(oListWrapper,setCurrentNews);
         window.addEventListener('scroll',scrollToBottom.bind(null,getMoreList) ,false);
     }
 
@@ -79,6 +80,7 @@ import { scrollToBottom } from '../libs/utils';
             //缓存池里没有数据
             oListWrapper.innerHTML = PageLoading.tpl();
             newsData[type] = await serviecs.getNewsList(type,count);
+            console.log(newsData);
             setTimeout(()=>{
                 oListWrapper.innerHTML = '';
                 renderList(newsData[type][pageNum]);
@@ -104,6 +106,12 @@ import { scrollToBottom } from '../libs/utils';
             }, 2000);
           }
         }
+      }
+
+      function setCurrentNews(options){
+          const { idx, pageNum} = options;
+          const currentNews = newsData[config.type][pageNum][idx];
+          localStorage.setItem('currentNews',JSON.stringify(currentNews))
       }
     
     init();
